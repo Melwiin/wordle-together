@@ -1,35 +1,41 @@
 package de.lausebuben;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 
 
 public class Main implements ApplicationListener {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    private Rectangle rectangle;
 
     private BitmapFont font;
-    private String text;
 
     private Viewport viewport;
 
+    private Grid grid;
+    private Word currentWord;
+    private InputHandler inputHandler;
+
     @Override
     public void create() {
+
         batch = new SpriteBatch();
+
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        rectangle = new Rectangle(200,200,10,10);
         font = new BitmapFont();
 
-        viewport = new ScalingViewport(Scaling.fill, 800,600);
+        grid = new Grid();
+        currentWord = new Word();
+
+        inputHandler = new InputHandler(currentWord, grid);
+        Gdx.input.setInputProcessor(inputHandler); // send input to grid
     }
 
     @Override
@@ -37,18 +43,22 @@ public class Main implements ApplicationListener {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
         shapeRenderer.begin();
-        shapeRenderer.rect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+        grid.drawColoredBoxes(shapeRenderer);
+        shapeRenderer.set(ShapeRenderer.ShapeType.Line); // outline only
+        grid.drawBox(shapeRenderer);
         shapeRenderer.end();
 
         batch.begin();
-        font.draw(batch, "Hello World!", 200, 200);
+        grid.drawLetters(batch, font, currentWord, inputHandler.getRowCount());
+        grid.drawPreviousWords(batch, font);
         batch.end();
 
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+
+
     }
 
     @Override
@@ -66,5 +76,4 @@ public class Main implements ApplicationListener {
         batch.dispose();
         shapeRenderer.dispose();
     }
-
 }
