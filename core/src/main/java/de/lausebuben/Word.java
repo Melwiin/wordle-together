@@ -1,13 +1,13 @@
 package de.lausebuben;
 
 public class Word {
-    private StringBuilder word;
-    private int maxLength = 5;
+
+    public final StringBuilder word;
+    private final int maxLength = 5;
 
     public Word() {
         word = new StringBuilder(); // needs to exit, so it isnt nullpointer
     }
-
 
     public void addLetter(char letter) {
         if (word.length() < maxLength) {
@@ -32,16 +32,12 @@ public class Word {
         return ' ';
     }
 
-    public String getWord() {
-        return word.toString();
-    }
-
     public void clear() {
         word.setLength(0);
     }
 
-    public String getText() {
+    @Override
+    public String toString() {
         return word.toString();
     }
-
 }

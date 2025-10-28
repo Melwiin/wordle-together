@@ -4,33 +4,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import de.lausebuben.model.WordsJsonModel;
 
 import java.util.Random;
 
-
 public class WordDatabase {
     private Array<String> words;
-    private Random randomNumber;
-    private String targetWord;
-
-    public static class WordList {
-        public Array<String> words;
-    }
 
     public WordDatabase() {
-        randomNumber = new Random();
-        loadTargetWordFromFile();
+        loadWordsFromFile();
     }
 
-    public String loadTargetWordFromFile() {
-        FileHandle file = Gdx.files.internal("words.json");
-        Json json = new Json();
-        WordList wordList = json.fromJson(WordList.class, file);
-        words = wordList.words;
-
-        targetWord = words.get(randomNumber.nextInt(words.size));
+    public String selectRandomWord() {
+        Random randomNumber = new Random();
+        String targetWord = words.get(randomNumber.nextInt(words.size));
         System.out.println("Target word: " + targetWord);
         return targetWord;
+    }
+
+    private void loadWordsFromFile() {
+        FileHandle file = Gdx.files.internal("words.json");
+        Json json = new Json();
+        WordsJsonModel parsedJson = json.fromJson(WordsJsonModel.class, file);
+        words = parsedJson.words;
     }
 }
 

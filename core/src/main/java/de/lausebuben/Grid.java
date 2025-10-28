@@ -1,23 +1,21 @@
 package de.lausebuben;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Grid extends InputAdapter {
-    private float startX;
-    private float startY;
-    private float boxSize;
-    private float spaceX;
-    private float spaceY;
-    private float rows;
-    private int cols;
-    private StringBuilder word;
-    private Color[][] boxColors = new Color[6][5];
-    private String[] previousGuesses = new String[6];//
+public class Grid {
+    private final float startX;
+    private final float startY;
+    private final float boxSize;
+    private final float spaceX;
+    private final float spaceY;
+    private final float rows;
+    private final int cols;
+    private final Color[][] boxColors = new Color[6][5];
+    private final String[] previousGuesses = new String[6];
 
     public Grid() {// No parameters
         this.boxSize = 50;
@@ -29,7 +27,6 @@ public class Grid extends InputAdapter {
         float gridWidth = (cols * boxSize) + ((cols - 1) * spaceX); //spaces + box size
         this.startX = (Gdx.graphics.getWidth() - gridWidth) / 2;
         this.startY = Gdx.graphics.getHeight() - 300;
-
     }
 
     public void drawBox(ShapeRenderer shapeRenderer) {
@@ -46,7 +43,6 @@ public class Grid extends InputAdapter {
     }
 
     public void drawLetters(SpriteBatch batch, BitmapFont font, Word word, int row) {
-
         for (int i = 0; i < word.length(); i++) {
             float x = startX + i * (boxSize + spaceX);
             float y = startY - row * (boxSize + spaceY);
@@ -62,7 +58,6 @@ public class Grid extends InputAdapter {
     public void setBoxColor(int row, int col, Color color) {
         boxColors[row][col] = color;
     }
-
 
     public void drawColoredBoxes(ShapeRenderer shapeRenderer) {
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
@@ -101,7 +96,7 @@ public class Grid extends InputAdapter {
 
     }
 
-    public void addtoGuess(String guess, int row) {
+    public void addToGuess(String guess, int row) {
         previousGuesses[row] = guess;
     }
 }
